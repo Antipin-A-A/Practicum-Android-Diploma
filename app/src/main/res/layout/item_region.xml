@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:gravity="center_vertical"
+    android:background="@color/white_black"
     android:orientation="horizontal">
 
     <TextView
@@ -17,6 +18,7 @@
         android:layout_weight="1"
         android:textColor="@color/black_white"
         app:drawableEndCompat="@drawable/outline_arrow_forward_ios_24"
+        app:drawableTint="@color/black_white"
         tools:text="Страна" />
 
 </LinearLayout> 
