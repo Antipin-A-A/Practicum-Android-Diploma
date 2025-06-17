@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.screens.region
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +40,7 @@ class AreasViewModel(
                     _uiState.update { it.copy(isError = true) }
                 }
             } catch (e: IOException) {
+                Log.e("FilterViewModel", "Ошибка при загрузке отраслей", e)
                 _uiState.update { it.copy(isError = true) }
             }
         }

@@ -9,4 +9,4 @@ data class Area(
     @SerializedName("id") val id: String,
     @SerializedName("name") val name: String,
     @SerializedName("areas") val areas: List<Area>?,
-): Parcelable
+) : Parcelable

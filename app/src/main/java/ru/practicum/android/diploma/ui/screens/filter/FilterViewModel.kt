@@ -109,7 +109,7 @@ class FilterViewModel(
         Log.i("area", "текст установлен на: $area")
     }
 
-    fun setAreas(country: String?){
+    fun setAreas(country: String?) {
         _uiState.update { it.copy(workArea = country.toString()) }
         Log.i("setCountry", "текст установлен на: $country")
     }

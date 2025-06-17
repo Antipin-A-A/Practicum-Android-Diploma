@@ -16,6 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.network.models.FilterSettings
+import ru.practicum.android.diploma.ui.screens.filter.FilterViewModel.Companion.FILTER_DELAY
 
 class FilterFragment : Fragment() {
 
@@ -82,7 +83,7 @@ class FilterFragment : Fragment() {
                 if (binding.salaryInput.text.toString() != state.salary) {
                     binding.salaryInput.setText(state.salary)
                 }
-                delay(500)
+                delay(FILTER_DELAY)
                 binding.checkboxFrame.isChecked = state.onlyWithSalary
                 binding.areaText.setText(state.workArea)
                 binding.industryText.setText(state.workIndustry)

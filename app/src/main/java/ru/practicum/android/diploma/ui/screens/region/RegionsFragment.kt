@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentRegionBinding
-import ru.practicum.android.diploma.ui.screens.favourites.region.AreaAdapter
 
 class RegionsFragment : Fragment() {
     private val viewModel by viewModel<AreasViewModel>()

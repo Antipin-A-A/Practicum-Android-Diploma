@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.screens.favourites.region
+package ru.practicum.android.diploma.ui.screens.region
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,13 +28,14 @@ class AreaAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AreaViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_region,parent,false)
+            .inflate(R.layout.item_region, parent, false)
         return AreaViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: AreaViewHolder, position: Int) {
         holder.bind(items[position])
     }
+
     fun clearSelectedItem() {
         val oldPosition = selectedItemPosition
         selectedItemId = null

@@ -39,7 +39,7 @@ class MainViewModel(
                 currentQuery = query
                 currentFilterSettings = filterSettings ?: currentFilterSettings
             }
-            val areaId = filterSettings?.area?.id?: currentFilterSettings?.area?.id
+            val areaId = filterSettings?.area?.id ?: currentFilterSettings?.area?.id
             val salary = filterSettings?.salary ?: currentFilterSettings?.salary
             val onlyWithSalary = filterSettings?.onlyWithSalary ?: currentFilterSettings?.onlyWithSalary
             val industryId = filterSettings?.selectedIndustry?.id ?: currentFilterSettings?.selectedIndustry?.id

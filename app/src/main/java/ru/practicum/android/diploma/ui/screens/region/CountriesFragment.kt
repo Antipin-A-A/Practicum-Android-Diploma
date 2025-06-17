@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentCountriesBinding
-import ru.practicum.android.diploma.ui.screens.favourites.region.AreaAdapter
 
 class CountriesFragment : Fragment() {
     private val viewModel by viewModel<AreasViewModel>()
