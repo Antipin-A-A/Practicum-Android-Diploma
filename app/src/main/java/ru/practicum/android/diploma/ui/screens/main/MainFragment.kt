@@ -176,14 +176,22 @@ class MainFragment : Fragment() {
                 }
 
                 is UiState.Error -> {
-                    showMessage(getString(R.string.no_internet), "1", R.drawable.image_skull)
+                    if (state.vacancies.isEmpty()) {
+                        showMessage(getString(R.string.no_internet), "1", R.drawable.image_skull)
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.check_your_internet_connection),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.check_your_internet_connection),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                     binding.infoSearch.isVisible = false
                     binding.progressBar.isVisible = false
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.check_your_internet_connection),
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
 
                 is UiState.Idle -> {

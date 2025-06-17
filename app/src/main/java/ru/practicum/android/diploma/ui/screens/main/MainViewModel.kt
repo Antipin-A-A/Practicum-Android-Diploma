@@ -88,7 +88,7 @@ class MainViewModel(
         _isLoading.postValue(false)
 
         if (errorMessage != null) {
-            _searchState.postValue(UiState.Error(errorMessage))
+            _searchState.postValue(UiState.Error(allVacancies, errorMessage))
             return
         }
 
