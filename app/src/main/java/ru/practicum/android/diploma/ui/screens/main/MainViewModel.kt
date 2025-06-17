@@ -88,24 +88,20 @@ class MainViewModel(
 
         if (errorMessage != null) {
             _searchState.postValue(UiState.Error(allVacancies, errorMessage))
-            Log.d("errors", "сообщение об ошибке есть")
             return
         }
 
         if (vacancies.isNullOrEmpty()) {
             if (page == 0) {
                 _searchState.postValue(UiState.NotFound)
-                Log.d("errors", "пустой список, нулевая страница")
             } else {
                 _searchState.postValue(UiState.Content(allVacancies, vacanciesCount!!))
-                Log.d("errors", "пустой список, ненулевая страница")
             }
             isLoadingMore = true
             return
         }
         allVacancies.addAll(vacancies)
         _searchState.postValue(UiState.Content(allVacancies, vacanciesCount!!))
-        Log.d("errors", "пост после всего")
         currentPage++
     }
 
@@ -123,7 +119,6 @@ class MainViewModel(
 
     fun clearSearchResults() {
         _searchState.postValue(UiState.Idle)
-        Log.d("errors", "пост ожидания")
     }
 
 }

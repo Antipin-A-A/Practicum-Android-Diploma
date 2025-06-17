@@ -190,7 +190,7 @@ class MainFragment : Fragment() {
                         } else {
                             Log.i("errors", "no internet toast")
                             lifecycleScope.launch {
-                                delay(3000L)
+                                delay(TOAST_DEBOUNCE_DELAY)
                                 isToastAllowed = true
                             }
                             Toast.makeText(
@@ -295,6 +295,7 @@ class MainFragment : Fragment() {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val TOAST_DEBOUNCE_DELAY = 3000L
     }
 
 }
