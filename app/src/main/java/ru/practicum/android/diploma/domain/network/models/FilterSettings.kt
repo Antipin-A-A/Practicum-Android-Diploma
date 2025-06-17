@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class FilterSettings(
     val selectedIndustry: Industry? = null,
     val salary: String? = null,
-    val onlyWithSalary: Boolean? = false
+    val onlyWithSalary: Boolean? = false,
+    val area: Area? = null,
 ) : Parcelable

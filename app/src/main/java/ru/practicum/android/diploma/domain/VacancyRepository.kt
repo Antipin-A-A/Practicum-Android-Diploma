@@ -12,7 +12,8 @@ interface VacancyRepository {
         page: Int,
         industry: String? = null,
         salary: Int? = null,
-        onlyWithSalary: Boolean? = null
+        onlyWithSalary: Boolean? = null,
+        area: String? = null
     ): Flow<Triple<List<VacancyDetails>?, String?, String?>>
     suspend fun getVacancyDetails(id: String): Flow<Resource<VacancyDetails>>
     suspend fun addToFavorites(vacancy: VacancyEntity)

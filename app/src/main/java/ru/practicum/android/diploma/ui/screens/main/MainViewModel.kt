@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.screens.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,10 +39,12 @@ class MainViewModel(
                 currentQuery = query
                 currentFilterSettings = filterSettings ?: currentFilterSettings
             }
+            val areaId = filterSettings?.area?.id ?: currentFilterSettings?.area?.id
             val salary = filterSettings?.salary ?: currentFilterSettings?.salary
             val onlyWithSalary = filterSettings?.onlyWithSalary ?: currentFilterSettings?.onlyWithSalary
             val industryId = filterSettings?.selectedIndustry?.id ?: currentFilterSettings?.selectedIndustry?.id
-            loadPage(query, currentPage, industryId, salary?.toIntOrNull(), onlyWithSalary)
+            loadPage(query, currentPage, industryId, salary?.toIntOrNull(), onlyWithSalary, areaId)
+            Log.i("LogLoad1", " $areaId and $industryId")
         }
     }
 
@@ -50,7 +53,8 @@ class MainViewModel(
         page: Int,
         industryId: String?,
         salary: Int? = null,
-        onlyWithSalary: Boolean? = null
+        onlyWithSalary: Boolean? = null,
+        areaId: String?
     ) {
         searchJob?.cancel()
         _isLoading.postValue(true)
@@ -61,7 +65,8 @@ class MainViewModel(
                 page,
                 industryId,
                 salary,
-                onlyWithSalary
+                onlyWithSalary,
+                areaId
             ) // Важно: нужен метод с поддержкой страниц!
                 .collect { triple ->
                     processResult(
@@ -107,7 +112,10 @@ class MainViewModel(
         val industryId = currentFilterSettings?.selectedIndustry?.id
         val salary = currentFilterSettings?.salary
         val onlyWithSalary = currentFilterSettings?.onlyWithSalary
-        loadPage(currentQuery, currentPage, industryId, salary?.toIntOrNull(), onlyWithSalary)
+        val areaId = currentFilterSettings?.area?.id
+        Log.i("LogLoad", " $areaId and $industryId")
+        loadPage(currentQuery, currentPage, industryId, salary?.toIntOrNull(), onlyWithSalary, areaId)
+
     }
 
     fun clearSearchResults() {
