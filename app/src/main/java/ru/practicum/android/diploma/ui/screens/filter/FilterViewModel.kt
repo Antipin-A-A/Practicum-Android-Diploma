@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.FilterInteractor
+import ru.practicum.android.diploma.domain.network.models.Area
 import ru.practicum.android.diploma.domain.network.models.Industry
 import java.io.IOException
 
@@ -55,6 +56,14 @@ class FilterViewModel(
         _uiState.update { it.copy(selectedIndustry = industry) }
     }
 
+    fun onSelectCountry(country: Area?) {
+        _uiState.update { it.copy(selectedCountry = country, selectedRegion = null) }
+    }
+
+    fun onSelectRegion(region: Area?) {
+        _uiState.update { it.copy(selectedRegion = region) }
+    }
+
     fun setSalary(salaryFilter: String) {
         _uiState.update { it.copy(salary = salaryFilter) }
     }
@@ -67,9 +76,12 @@ class FilterViewModel(
         _uiState.update {
             it.copy(
                 selectedIndustry = null,
-                workArea = "",
+                workIndustry = "",
                 salary = "",
-                onlyWithSalary = false
+                onlyWithSalary = false,
+                selectedCountry = null,
+                selectedRegion = null,
+                workArea = ""
             )
         }
     }
@@ -93,16 +105,21 @@ class FilterViewModel(
     }
 
     fun setIndustry(area: String) {
-        _uiState.update { it.copy(workArea = area) }
-        Log.d("area", "текст установлен на: $area")
+        _uiState.update { it.copy(workIndustry = area) }
+        Log.i("area", "текст установлен на: $area")
+    }
+
+    fun setAreas(country: String?){
+        _uiState.update { it.copy(workArea = country.toString()) }
+        Log.i("setCountry", "текст установлен на: $country")
     }
 
     override fun onCleared() {
         super.onCleared()
-        Log.d("area", "ViewModel удалена")
+        Log.d("areaDelete", "ViewModel удалена")
     }
 
     companion object {
-        private const val FILTER_DELAY = 500L
+        internal const val FILTER_DELAY = 500L
     }
 }

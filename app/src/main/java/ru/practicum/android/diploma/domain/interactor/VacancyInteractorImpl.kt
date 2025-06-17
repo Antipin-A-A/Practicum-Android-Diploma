@@ -19,9 +19,10 @@ class VacancyInteractorImpl(
         page: Int,
         industry: String?,
         salary: Int?,
-        onlyWithSalary: Boolean?
+        onlyWithSalary: Boolean?,
+        area: String?
     ): Flow<Triple<List<VacancyDetails>?, String?, String?>> {
-        return repository.searchVacancy(query, page, industry, salary, onlyWithSalary)
+        return repository.searchVacancy(query, page, industry, salary, onlyWithSalary, area)
     }
 
     override suspend fun getVacancyDetails(id: String): Flow<Resource<VacancyDetails>> {

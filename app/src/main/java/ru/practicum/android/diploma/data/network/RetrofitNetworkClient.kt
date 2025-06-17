@@ -29,8 +29,10 @@ class RetrofitNetworkClient(
                         page = dto.page,
                         industry = dto.industry,
                         salary = dto.salary,
-                        onlyWithSalary = dto.onlyWithSalary
+                        onlyWithSalary = dto.onlyWithSalary,
+                        area = dto.area
                     )
+                    Log.i("LogRetrofit", " $response")
                     response.apply { resultCode = SUCCESS }
                 } catch (e: IOException) {
                     Log.e("TAG", "Network error", e)

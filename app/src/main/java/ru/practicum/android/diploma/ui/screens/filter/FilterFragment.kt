@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.ui.screens.filter
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -43,7 +45,14 @@ class FilterFragment : Fragment() {
 
     private fun setupBindings() {
         binding.toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
-        binding.area.setOnClickListener { }
+        binding.area.setOnClickListener {
+            val direction = FilterFragmentDirections.actionFilterFragmentToAreasFilterFragment()
+            findNavController().navigate(direction)
+        }
+        binding.areaText.setOnClickListener {
+            val direction = FilterFragmentDirections.actionFilterFragmentToAreasFilterFragment()
+            findNavController().navigate(direction)
+        }
         binding.workingArea.setOnClickListener {
             val direction = FilterFragmentDirections.actionFilterFragmentToWorkAreaFragment()
             findNavController().navigate(direction)
@@ -73,16 +82,31 @@ class FilterFragment : Fragment() {
                 if (binding.salaryInput.text.toString() != state.salary) {
                     binding.salaryInput.setText(state.salary)
                 }
+                delay(500)
                 binding.checkboxFrame.isChecked = state.onlyWithSalary
-                binding.industryText.setText(state.workArea)
+                binding.areaText.setText(state.workArea)
+                binding.industryText.setText(state.workIndustry)
+                Log.i(" LogFilter", "${state.workIndustry}, ${state.workArea}")
                 if (state.workArea.isNotEmpty()) {
+                    binding.workCountryIcon.setImageResource(R.drawable.close_24px)
+                    binding.workCountryIcon.setOnClickListener {
+                        val clearedFilter = FilterSettings(area = null)
+                        sendFilterAndNavigateBack(clearedFilter)
+                        viewModel.setAreas("")
+                        binding.workAreaIcon.setImageResource(R.drawable.outline_arrow_forward_ios_24)
+                    }
+                }
+                if (state.workIndustry.isNotEmpty()) {
                     binding.workAreaIcon.setImageResource(R.drawable.close_24px)
                     binding.workAreaIcon.setOnClickListener {
+                        val clearedFilter = FilterSettings(selectedIndustry = null)
+                        sendFilterAndNavigateBack(clearedFilter)
                         viewModel.setIndustry("")
                         binding.workAreaIcon.setImageResource(R.drawable.outline_arrow_forward_ios_24)
                     }
                 } else {
                     binding.workAreaIcon.setImageResource(R.drawable.outline_arrow_forward_ios_24)
+                    binding.workCountryIcon.setImageResource(R.drawable.outline_arrow_forward_ios_24)
                 }
                 allFieldsCheck()
             }
@@ -93,8 +117,10 @@ class FilterFragment : Fragment() {
             val filterSettings = FilterSettings(
                 selectedIndustry = state.selectedIndustry,
                 salary = state.salary,
-                onlyWithSalary = state.onlyWithSalary
+                onlyWithSalary = state.onlyWithSalary,
+                area = state.selectedCountry,
             )
+            Log.i("LogFilterSettings", " ${state.selectedCountry}, ${state.selectedIndustry}")
             sendFilterAndNavigateBack(filterSettings)
             findNavController().popBackStack()
         }
@@ -142,7 +168,8 @@ class FilterFragment : Fragment() {
         val clearedFilter = FilterSettings(
             selectedIndustry = null,
             salary = "",
-            onlyWithSalary = false
+            onlyWithSalary = false,
+            area = null,
         )
         sendFilterAndNavigateBack(clearedFilter)
     }

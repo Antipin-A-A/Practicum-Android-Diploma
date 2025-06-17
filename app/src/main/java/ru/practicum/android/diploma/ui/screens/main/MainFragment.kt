@@ -262,7 +262,8 @@ class MainFragment : Fragment() {
     private fun isFilterApplied(filter: FilterSettings): Boolean {
         return !filter.salary.isNullOrBlank() ||
             filter.selectedIndustry != null ||
-            filter.onlyWithSalary!!
+            filter.onlyWithSalary!! ||
+            filter.area != null
     }
 
     private fun updateFilterIcon(isApplied: Boolean) {
