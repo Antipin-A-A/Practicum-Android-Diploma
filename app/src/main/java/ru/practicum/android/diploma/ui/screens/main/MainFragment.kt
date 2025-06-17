@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.screens.main
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -36,6 +37,7 @@ class MainFragment : Fragment() {
     private val viewModel by viewModel<MainViewModel>()
     private var isClickAllowed = true
     private var filterMenuItem: MenuItem? = null
+    private var isToastAllowed = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -170,25 +172,33 @@ class MainFragment : Fragment() {
                 }
 
                 is UiState.NotFound -> {
-                    showMessage(getString(R.string.empty_search), "1", R.drawable.image_kat)
+                    showMessage(getString(R.string.empty_search), R.drawable.image_kat)
                     binding.infoSearch.text = getString(R.string.no_such_vacancies)
                     binding.infoSearch.isVisible = true
                 }
 
                 is UiState.Error -> {
-                    if (state.vacancies.isEmpty()) {
-                        showMessage(getString(R.string.no_internet), "1", R.drawable.image_skull)
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.check_your_internet_connection),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.check_your_internet_connection),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    if (isToastAllowed) {
+                        isToastAllowed = false
+                        if (state.vacancies.isEmpty()) {
+                            showMessage(getString(R.string.no_internet), R.drawable.image_skull)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.check_your_internet_connection),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Log.i("errors", "no internet toast")
+                            lifecycleScope.launch {
+                                delay(3000L)
+                                isToastAllowed = true
+                            }
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.check_your_internet_connection),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                     binding.infoSearch.isVisible = false
                     binding.progressBar.isVisible = false
@@ -211,7 +221,7 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun showMessage(text: String, additionalMessage: String, drawable: Int) =
+    private fun showMessage(text: String, drawable: Int) =
         with(binding) {
             imageStart.isVisible = false
             progressBar.isVisible = false
