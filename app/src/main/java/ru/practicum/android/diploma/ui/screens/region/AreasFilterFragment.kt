@@ -85,7 +85,7 @@ class AreasFilterFragment : Fragment() {
         binding.applyButton.setOnClickListener {
             val country = viewModel.uiState.value.selectedCountry
             val region = viewModel.uiState.value.selectedRegion
-            viewModel.setAreas("${country?.name}, ${region?.name?: ""}")
+            viewModel.setAreas("${country?.name}, ${region?.name ?: ""}")
             findNavController().popBackStack()
         }
     }
@@ -123,71 +123,4 @@ class AreasFilterFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-//        parentFragmentManager.setFragmentResultListener("country_result", viewLifecycleOwner) { _, bundle ->
-//            val country = bundle.getParcelable<Area>("selected_country")
-//            selectedCountry = country
-//            if (selectedCountry != null) {
-//                binding.countryImage.setImageResource(R.drawable.close_24px)
-//                binding.countryImage.setOnClickListener {
-//                    binding.countryText.setText("")
-//                    binding.countryImage.setImageResource(R.drawable.outline_arrow_forward_ios_24)
-//                }
-//            }
-//            binding.countryText.setText(country?.name ?: "")
-//            binding.regionText.setText("")
-//            binding.regionImage.setImageResource(R.drawable.outline_arrow_forward_ios_24)
-//            applyButtonCheck()
-//        }
-//
-//        parentFragmentManager.setFragmentResultListener("region_result", viewLifecycleOwner) { _, bundle ->
-//            val region = bundle.getParcelable<Area>("selected_region")
-//            selectedRegin = region
-//            if (selectedRegin != null) {
-//                binding.regionImage.setImageResource(R.drawable.close_24px)
-//                binding.regionImage.setOnClickListener {
-//                    binding.regionText.setText("")
-//                    binding.regionImage.setImageResource(R.drawable.outline_arrow_forward_ios_24)
-//                }
-//            }
-//            binding.regionText.setText(region?.name ?: "")
-//            applyButtonCheck()
-//        }
-//
-//        binding.country.setOnClickListener {
-//            findNavController().navigate(R.id.action_areasFilterFragment_to_countriesFragment)
-//        }
-//
-//        binding.region.setOnClickListener {
-//            selectedCountry?.let { country ->
-//                val action = AreasFilterFragmentDirections.actionAreasFilterFragmentToRegionsFragment(country)
-//                findNavController().navigate(action)
-//            }
-//        }
-//
-//        binding.applyButton.setOnClickListener {
-//            if (selectedRegin == null) {
-//                viewModel.onSelectArea(selectedCountry)
-//            } else {
-//                viewModel.onSelectArea(selectedRegin)
-//            }
-//            viewModel.setAreas("${selectedCountry?.name}, ${selectedRegin?.name}")
-//            findNavController().popBackStack()
-//        }
-//    }
-//
-//    private fun applyButtonCheck() {
-//        binding.applyButton.isVisible = !binding.countryText.text.isNullOrEmpty()
-//    }
-//
-//    private fun setupToolbar() {
-//        binding.toolbar.setNavigationOnClickListener {
-//            findNavController().popBackStack()
-//        }
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
 }
