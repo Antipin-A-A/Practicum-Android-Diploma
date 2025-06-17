@@ -104,14 +104,14 @@ class FilterViewModel(
         _uiState.update { it.copy(industries = firstList) }
     }
 
-    fun setIndustry(area: String) {
-        _uiState.update { it.copy(workIndustry = area) }
-        Log.i("area", "текст установлен на: $area")
+    fun setIndustry(industry: String) {
+        _uiState.update { it.copy(workIndustry = industry) }
+        Log.i("area", "текст установлен на: $industry")
     }
 
-    fun setAreas(country: String?) {
-        _uiState.update { it.copy(workArea = country.toString()) }
-        Log.i("setCountry", "текст установлен на: $country")
+    fun setAreas(area: String) {
+        _uiState.update { it.copy(workArea = area) }
+        Log.i("setCountry", "текст установлен на: $area")
     }
 
     override fun onCleared() {

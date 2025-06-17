@@ -34,7 +34,7 @@ class RootActivity : AppCompatActivity() {
                 R.id.industryFragment,
                 R.id.areasFilterFragment,
                 R.id.countriesFragment,
-                R.id.areasFilterFragment -> {
+                R.id.regionsFragment -> {
                     binding?.bottomNavigation?.isVisible = false
                 }
 

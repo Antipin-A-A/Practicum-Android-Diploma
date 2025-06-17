@@ -29,6 +29,7 @@
             android:autofillHints=""
             android:background="@drawable/edittext"
             android:hint="@string/enter_industry"
+            android:textColorHint="@color/gray_white"
             android:inputType="text"
             android:maxLines="1"
             android:paddingStart="@dimen/indent_16dp"

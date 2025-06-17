@@ -52,7 +52,7 @@ class AreasFilterFragment : Fragment() {
     }
 
     private fun setupClicks() {
-        binding.country.setOnClickListener {
+        binding.countryText.setOnClickListener {
             findNavController().navigate(R.id.action_areasFilterFragment_to_countriesFragment)
         }
         binding.countryImage.setOnClickListener {
@@ -62,7 +62,7 @@ class AreasFilterFragment : Fragment() {
                 findNavController().navigate(R.id.action_areasFilterFragment_to_countriesFragment)
             }
         }
-        binding.region.setOnClickListener {
+        binding.regionText.setOnClickListener {
             viewModel.uiState.value.selectedCountry?.let { country ->
                 val action = AreasFilterFragmentDirections.actionAreasFilterFragmentToRegionsFragment(country)
                 findNavController().navigate(action)

@@ -10,13 +10,11 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.network.models.FilterSettings
-import ru.practicum.android.diploma.ui.screens.filter.FilterViewModel.Companion.FILTER_DELAY
 
 class FilterFragment : Fragment() {
 
@@ -35,8 +33,12 @@ class FilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupBindings()
         allFieldsCheck()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupBindings()
     }
 
     override fun onDestroyView() {
@@ -83,26 +85,24 @@ class FilterFragment : Fragment() {
                 if (binding.salaryInput.text.toString() != state.salary) {
                     binding.salaryInput.setText(state.salary)
                 }
-                delay(FILTER_DELAY)
                 binding.checkboxFrame.isChecked = state.onlyWithSalary
                 binding.areaText.setText(state.workArea)
                 binding.industryText.setText(state.workIndustry)
-                Log.i(" LogFilter", "${state.workIndustry}, ${state.workArea}")
-                if (state.workArea.isNotEmpty()) {
-                    binding.workCountryIcon.setImageResource(R.drawable.close_24px)
-                    binding.workCountryIcon.setOnClickListener {
-                        val clearedFilter = FilterSettings(area = null)
-                        sendFilterAndNavigateBack(clearedFilter)
-                        viewModel.setAreas("")
-                        binding.workAreaIcon.setImageResource(R.drawable.outline_arrow_forward_ios_24)
-                    }
-                }
                 if (state.workIndustry.isNotEmpty()) {
                     binding.workAreaIcon.setImageResource(R.drawable.close_24px)
                     binding.workAreaIcon.setOnClickListener {
                         val clearedFilter = FilterSettings(selectedIndustry = null)
                         sendFilterAndNavigateBack(clearedFilter)
                         viewModel.setIndustry("")
+                        binding.workAreaIcon.setImageResource(R.drawable.outline_arrow_forward_ios_24)
+                    }
+                }
+                if (state.workArea.isNotEmpty()) {
+                    binding.workCountryIcon.setImageResource(R.drawable.close_24px)
+                    binding.workCountryIcon.setOnClickListener {
+                        val clearedFilter = FilterSettings(area = null)
+                        sendFilterAndNavigateBack(clearedFilter)
+                        viewModel.setAreas("")
                         binding.workAreaIcon.setImageResource(R.drawable.outline_arrow_forward_ios_24)
                     }
                 } else {
