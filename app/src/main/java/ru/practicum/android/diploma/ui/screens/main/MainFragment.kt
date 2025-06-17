@@ -176,14 +176,14 @@ class MainFragment : Fragment() {
                 }
 
                 is UiState.Error -> {
-                    if (state.vacancies.isEmpty()){
+                    if (state.vacancies.isEmpty()) {
                         showMessage(getString(R.string.no_internet), "1", R.drawable.image_skull)
                         Toast.makeText(
                             requireContext(),
                             getString(R.string.check_your_internet_connection),
                             Toast.LENGTH_SHORT
                         ).show()
-                    }else{
+                    } else {
                         Toast.makeText(
                             requireContext(),
                             getString(R.string.check_your_internet_connection),
