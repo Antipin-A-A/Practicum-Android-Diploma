@@ -67,15 +67,14 @@ class MainViewModel(
                 salary,
                 onlyWithSalary,
                 areaId
-            ) // Важно: нужен метод с поддержкой страниц!
-                .collect { triple ->
-                    processResult(
-                        vacancies = triple.first,
-                        errorMessage = triple.second,
-                        vacanciesCount = triple.third,
-                        page = page
-                    )
-                }
+            ).collect { triple ->
+                processResult(
+                    vacancies = triple.first,
+                    errorMessage = triple.second,
+                    vacanciesCount = triple.third,
+                    page = page
+                )
+            }
         }
     }
 
@@ -88,7 +87,7 @@ class MainViewModel(
         _isLoading.postValue(false)
 
         if (errorMessage != null) {
-            _searchState.postValue(UiState.Error(errorMessage))
+            _searchState.postValue(UiState.Error(allVacancies, errorMessage))
             return
         }
 
