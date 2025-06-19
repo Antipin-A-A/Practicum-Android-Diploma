@@ -15,6 +15,7 @@ import ru.practicum.android.diploma.domain.VacancyRepository
 import ru.practicum.android.diploma.domain.network.models.Area
 import ru.practicum.android.diploma.domain.network.models.VacancyDetails
 import ru.practicum.android.diploma.util.Resource
+import kotlin.String
 
 class VacancyRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -27,7 +28,8 @@ class VacancyRepositoryImpl(
         page: Int,
         industry: String?,
         salary: Int?,
-        onlyWithSalary: Boolean?
+        onlyWithSalary: Boolean?,
+        area: String?
     ): Flow<Triple<List<VacancyDetails>?, String?, String?>> = flow {
         val response = networkClient.doSearchRequest(
             AllVacancyRequest(
@@ -35,7 +37,8 @@ class VacancyRepositoryImpl(
                 page = page,
                 industry = industry,
                 salary = salary,
-                onlyWithSalary = onlyWithSalary
+                onlyWithSalary = onlyWithSalary,
+                area = area
             )
         )
         when (response.resultCode) {

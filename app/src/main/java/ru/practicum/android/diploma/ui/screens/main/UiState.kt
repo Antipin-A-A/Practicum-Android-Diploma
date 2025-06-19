@@ -16,6 +16,7 @@ sealed interface UiState {
     object NotFound : UiState
 
     data class Error(
+        val vacancies: List<VacancyDetails>,
         val errorMessage: String
     ) : UiState
 

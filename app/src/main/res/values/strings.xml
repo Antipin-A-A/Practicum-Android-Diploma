@@ -48,5 +48,11 @@
         <item quantity="other">Найдено %d вакансий</item>
     </plurals>
     <string name="empty_industry_list">Не удалось получить список</string>
+    <string name="choosing_place_work">Выбор места работы</string>
+    <string name="choosing_country">Выбор страны</string>
+    <string name="choosing_region">Выбор региона</string>
+    <string name="region_no_found">Такого региона нет</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
 </resources>
 

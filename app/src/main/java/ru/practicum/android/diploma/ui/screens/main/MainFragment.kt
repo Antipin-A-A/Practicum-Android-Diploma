@@ -3,7 +3,9 @@ package ru.practicum.android.diploma.ui.screens.main
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -34,6 +36,8 @@ class MainFragment : Fragment() {
     private var adapter: VacancyAdapter? = null
     private val viewModel by viewModel<MainViewModel>()
     private var isClickAllowed = true
+    private var filterMenuItem: MenuItem? = null
+    private var isToastAllowed = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +58,9 @@ class MainFragment : Fragment() {
     }
 
     private fun setupToolbar() {
+        filterMenuItem = binding.toolbar.menu.findItem(R.id.action_filter)
+        viewModel.currentFilterSettings?.let { updateFilterIcon(isFilterApplied(it)) }
+
         binding.toolbar.setOnMenuItemClickListener {
             val action = MainFragmentDirections.actionHomeFragmentToFilterFragment()
             findNavController().navigate(action)
@@ -165,20 +172,36 @@ class MainFragment : Fragment() {
                 }
 
                 is UiState.NotFound -> {
-                    showMessage(getString(R.string.empty_search), "1", R.drawable.image_kat)
+                    showMessage(getString(R.string.empty_search), R.drawable.image_kat)
                     binding.infoSearch.text = getString(R.string.no_such_vacancies)
                     binding.infoSearch.isVisible = true
                 }
 
                 is UiState.Error -> {
-                    showMessage(getString(R.string.no_internet), "1", R.drawable.image_skull)
+                    if (isToastAllowed) {
+                        isToastAllowed = false
+                        if (state.vacancies.isEmpty()) {
+                            showMessage(getString(R.string.no_internet), R.drawable.image_skull)
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.check_your_internet_connection),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Log.i("errors", "no internet toast")
+                            lifecycleScope.launch {
+                                delay(TOAST_DEBOUNCE_DELAY)
+                                isToastAllowed = true
+                            }
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.check_your_internet_connection),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                     binding.infoSearch.isVisible = false
                     binding.progressBar.isVisible = false
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.check_your_internet_connection),
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
 
                 is UiState.Idle -> {
@@ -198,7 +221,7 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun showMessage(text: String, additionalMessage: String, drawable: Int) =
+    private fun showMessage(text: String, drawable: Int) =
         with(binding) {
             imageStart.isVisible = false
             progressBar.isVisible = false
@@ -243,6 +266,8 @@ class MainFragment : Fragment() {
             ?.observe(viewLifecycleOwner) { filterSettings ->
                 filterSettings?.let {
                     viewModel.currentFilterSettings = it
+                    val isApplied = isFilterApplied(it)
+                    updateFilterIcon(isApplied)
                     viewModel.searchVacancies(
                         query = viewModel.lastSearchQuery ?: "",
                         isNewSearch = true,
@@ -252,8 +277,25 @@ class MainFragment : Fragment() {
             }
     }
 
+    private fun isFilterApplied(filter: FilterSettings): Boolean {
+        return !filter.salary.isNullOrBlank() ||
+            filter.selectedIndustry != null ||
+            filter.onlyWithSalary!! ||
+            filter.area != null
+    }
+
+    private fun updateFilterIcon(isApplied: Boolean) {
+        val iconRes = if (isApplied) {
+            R.drawable.filter_on_24px // активный фильтр
+        } else {
+            R.drawable.filter_off__24px // неактивный фильтр
+        }
+        filterMenuItem?.icon = AppCompatResources.getDrawable(requireContext(), iconRes)
+    }
+
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val TOAST_DEBOUNCE_DELAY = 3000L
     }
 
 }

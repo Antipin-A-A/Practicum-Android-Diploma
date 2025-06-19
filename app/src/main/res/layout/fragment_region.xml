@@ -5,15 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_black"
-    android:orientation="vertical"
-    tools:context=".ui.screens.filter.IndustryFragment">
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:navigationIcon="@drawable/arrow_back_24px"
-        app:title="@string/enter_industry"
+        app:title="@string/choosing_region"
         app:titleMargin="@dimen/indent_8dp"
         app:titleTextAppearance="@style/Medium22" />
 
@@ -30,6 +29,7 @@
             android:autofillHints=""
             android:background="@drawable/edittext"
             android:hint="@string/enter_industry"
+            android:textColorHint="@color/gray_white"
             android:inputType="text"
             android:maxLines="1"
             android:paddingStart="@dimen/indent_16dp"
@@ -37,7 +37,7 @@
             android:textAppearance="@style/Regular16" />
 
         <ImageView
-            android:id="@+id/clearIndustry"
+            android:id="@+id/clearRegion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
@@ -47,40 +47,28 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/industriesRecyclerView"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:paddingTop="@dimen/indent_8dp"
-        tools:listitem="@layout/item_industry" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/applyButton"
-        style="@style/Medium16"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/indent_60dp"
-        android:layout_marginStart="@dimen/indent_16dp"
-        android:layout_marginEnd="@dimen/indent_16dp"
-        android:backgroundTint="@color/blue"
-        android:text="@string/select"
-        android:textColor="@color/white_universal"
-        android:visibility="gone"
-        app:cornerRadius="@dimen/indent_12dp" />
+        tools:listitem="@layout/item_region" />
 
     <LinearLayout
-        android:id="@+id/errorImage"
+        android:id="@+id/error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="gone">
 
         <ImageView
+            android:id="@+id/errorImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/image_kat" />
+            android:src="@drawable/magic_carpet" />
 
         <TextView
+            android:id="@+id/errorText"
             style="@style/Medium22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

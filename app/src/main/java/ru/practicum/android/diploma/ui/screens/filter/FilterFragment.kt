@@ -1,13 +1,10 @@
 package ru.practicum.android.diploma.ui.screens.filter
 
-import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -25,10 +22,6 @@ class FilterFragment : Fragment() {
     private var _binding: FragmentFilterBinding? = null
     private val binding: FragmentFilterBinding get() = requireNotNull(_binding)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,111 +33,97 @@ class FilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupBindings()
-        setupListeners()
         allFieldsCheck()
-    }
-
-    private fun setupListeners() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.salary.collect { salary ->
-                if (binding.salaryInput.text.toString() != salary) {
-                    binding.salaryInput.setText(salary)
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.onlyWithSalary.collect { onlyWithSalary ->
-                binding.checkboxFrame.isChecked = onlyWithSalary
-            }
-        }
-        binding.salaryInput.addTextChangedListener(
-            onTextChanged = { text: CharSequence?, _, _, _ ->
-                viewModel.setSalary(text?.toString() ?: "")
-                if (!text.isNullOrEmpty()) {
-                    binding.salaryInput.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        null,
-                        null,
-                        imageChooser(text),
-                        null
-                    )
-                }
-                allFieldsCheck()
-            },
-        )
     }
 
     override fun onResume() {
         super.onResume()
-        setupIndustryField()
+        setupBindings()
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setupBindings() {
         binding.toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
+        binding.area.setOnClickListener {
+            val direction = FilterFragmentDirections.actionFilterFragmentToAreasFilterFragment()
+            findNavController().navigate(direction)
+        }
+        binding.areaText.setOnClickListener {
+            val direction = FilterFragmentDirections.actionFilterFragmentToAreasFilterFragment()
+            findNavController().navigate(direction)
+        }
         binding.workingArea.setOnClickListener {
             val direction = FilterFragmentDirections.actionFilterFragmentToWorkAreaFragment()
             findNavController().navigate(direction)
         }
-        binding.checkboxFrame.setOnClickListener { viewModel.setOnlyWithSalary(binding.checkboxFrame.isChecked) }
-        binding.clearButton.setOnClickListener { allClear() }
-        binding.salaryInput.setOnTouchListener { _, event ->
-            if (event.action == android.view.MotionEvent.ACTION_UP) {
-                val drawableEnd = binding.salaryInput.compoundDrawablesRelative[2]
-                if (drawableEnd != null) {
-                    val touchableWidth = drawableEnd.intrinsicWidth + binding.salaryInput.paddingEnd
-                    val isClickOnDrawable = event.rawX >= binding.salaryInput.right - touchableWidth
-                    if (isClickOnDrawable) {
-                        binding.salaryInput.text?.clear()
-                        true
-                    } else {
-                        false
-                    }
-                } else {
-                    false
-                }
-            } else {
-                false
-            }
+        binding.industryText.setOnClickListener {
+            val direction = FilterFragmentDirections.actionFilterFragmentToWorkAreaFragment()
+            findNavController().navigate(direction)
         }
-        binding.applyButton.setOnClickListener {
-            val selectedIndustry = viewModel.selectedIndustry.value
-            val filterSettings = FilterSettings(
-                selectedIndustry = selectedIndustry,
-                salary = viewModel.salary.value,
-                onlyWithSalary = viewModel.onlyWithSalary.value
-            )
-            sendFilterAndNavigateBack(filterSettings)
-            findNavController().popBackStack()
+        binding.checkboxFrame.setOnClickListener {
+            viewModel.setOnlyWithSalary(binding.checkboxFrame.isChecked)
         }
-    }
+        binding.clearButton.setOnClickListener {
+            allClear()
+        }
+        binding.clearIndustry.setOnClickListener { binding.salaryInput.text?.clear() }
 
-    private fun setupIndustryField() {
+        binding.salaryInput.addTextChangedListener(
+            onTextChanged = { text: CharSequence?, _, _, _ ->
+                viewModel.setSalary(text?.toString() ?: "")
+                binding.clearIndustry.isVisible = !text.isNullOrEmpty()
+                allFieldsCheck()
+            }
+        )
+
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.workArea.collect { data ->
-                binding.industryText.setText(data)
-                Log.d("area1", "Значение $data установлено")
-                if (!binding.industryText.text.isNullOrEmpty()) {
+            viewModel.uiState.collect { state ->
+                if (binding.salaryInput.text.toString() != state.salary) {
+                    binding.salaryInput.setText(state.salary)
+                }
+                binding.checkboxFrame.isChecked = state.onlyWithSalary
+                binding.areaText.setText(state.workArea)
+                binding.industryText.setText(state.workIndustry)
+                if (state.workIndustry.isNotEmpty()) {
                     binding.workAreaIcon.setImageResource(R.drawable.close_24px)
                     binding.workAreaIcon.setOnClickListener {
+                        val clearedFilter = FilterSettings(selectedIndustry = null)
+                        sendFilterAndNavigateBack(clearedFilter)
                         viewModel.setIndustry("")
                         binding.workAreaIcon.setImageResource(R.drawable.outline_arrow_forward_ios_24)
                     }
-                    allFieldsCheck()
                 }
+                if (state.workArea.isNotEmpty()) {
+                    binding.workCountryIcon.setImageResource(R.drawable.close_24px)
+                    binding.workCountryIcon.setOnClickListener {
+                        val clearedFilter = FilterSettings(area = null)
+                        sendFilterAndNavigateBack(clearedFilter)
+                        viewModel.setAreas("")
+                        binding.workAreaIcon.setImageResource(R.drawable.outline_arrow_forward_ios_24)
+                    }
+                } else {
+                    binding.workAreaIcon.setImageResource(R.drawable.outline_arrow_forward_ios_24)
+                    binding.workCountryIcon.setImageResource(R.drawable.outline_arrow_forward_ios_24)
+                }
+                allFieldsCheck()
             }
         }
-    }
 
-    private fun imageChooser(text: CharSequence?): Drawable? {
-        return if (text.isNullOrBlank()) {
-            null
-        } else {
-            AppCompatResources.getDrawable(
-                requireContext(),
-                R.drawable.close_24px
+        binding.applyButton.setOnClickListener {
+            val state = viewModel.uiState.value
+            val filterSettings = FilterSettings(
+                selectedIndustry = state.selectedIndustry,
+                salary = state.salary,
+                onlyWithSalary = state.onlyWithSalary,
+                area = state.selectedCountry,
             )
+            Log.i("LogFilterSettings", " ${state.selectedCountry}, ${state.selectedIndustry}")
+            sendFilterAndNavigateBack(filterSettings)
+            findNavController().popBackStack()
         }
     }
 
@@ -190,7 +169,8 @@ class FilterFragment : Fragment() {
         val clearedFilter = FilterSettings(
             selectedIndustry = null,
             salary = "",
-            onlyWithSalary = false
+            onlyWithSalary = false,
+            area = null,
         )
         sendFilterAndNavigateBack(clearedFilter)
     }
@@ -200,5 +180,4 @@ class FilterFragment : Fragment() {
             ?.savedStateHandle
             ?.set("filter_settings", filterSettings)
     }
-
 }
