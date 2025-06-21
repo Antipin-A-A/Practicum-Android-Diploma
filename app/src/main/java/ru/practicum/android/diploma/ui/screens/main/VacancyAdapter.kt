@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import format
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.domain.OnItemClickListener
@@ -44,31 +45,10 @@ class VacancyAdapter(private val onItemClickListener: OnItemClickListener<Vacanc
                 }
                 companyName.text = vacancyDetails.employer.name
 
-                salary.text = when {
-                    value?.from != null && value.to != null ->
-                        itemView.context.getString(
-                            R.string.salary_range,
-                            value.from.toString(),
-                            value.to.toString(),
-                            getCurrencyIcon(value.currency.toString())
-                        )
-
-                    value?.from != null ->
-                        itemView.context.getString(
-                            R.string.salary_from,
-                            value.from.toString(),
-                            getCurrencyIcon(value.currency.toString())
-                        )
-
-                    value?.to != null ->
-                        itemView.context.getString(
-                            R.string.salary_to,
-                            value.to.toString(),
-                            getCurrencyIcon(value.currency.toString())
-                        )
-
-                    else -> itemView.context.getString(R.string.salary_not_specified)
-                }
+                salary.text = value.format(
+                    getString = { resId, args -> itemView.context.getString(resId, *args) },
+                    getCurrencyIcon = ::getCurrencyIcon
+                )
 
                 Glide.with(itemView)
                     .load(vacancyDetails.employer.logoUrls?.original)

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import format
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentDetailsBinding
@@ -114,34 +115,7 @@ class VacancyDetailsFragment : Fragment() {
 
     private fun updateBasicInfo(vacancy: VacancyDetails) {
         binding.jobTitle.text = vacancy.name
-        binding.salary.text = formatSalary(vacancy.salary)
-    }
-
-    private fun formatSalary(salary: Salary?): String {
-        return salary?.let {
-            when {
-                it.from != null && it.to != null -> getString(
-                    R.string.salary_range,
-                    it.from.toString(),
-                    it.to.toString(),
-                    getCurrencyIcon(it.currency.toString())
-                )
-
-                it.from != null -> getString(
-                    R.string.salary_from,
-                    it.from.toString(),
-                    getCurrencyIcon(it.currency.toString())
-                )
-
-                it.to != null -> getString(
-                    R.string.salary_to,
-                    it.to.toString(),
-                    getCurrencyIcon(it.currency.toString())
-                )
-
-                else -> getString(R.string.salary_not_specified)
-            }
-        } ?: getString(R.string.salary_not_specified)
+        binding.salary.text = vacancy.salary.format(::getString, ::getCurrencyIcon)
     }
 
     private fun updateCompanyInfo(vacancy: VacancyDetails) {
