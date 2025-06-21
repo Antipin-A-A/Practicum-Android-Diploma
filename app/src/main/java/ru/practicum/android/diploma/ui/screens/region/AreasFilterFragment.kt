@@ -84,7 +84,8 @@ class AreasFilterFragment : Fragment() {
         binding.applyButton.setOnClickListener {
             val country = viewModel.uiState.value.selectedCountry
             val region = viewModel.uiState.value.selectedRegion
-            viewModel.setAreas("${country?.name}, ${region?.name ?: ""}")
+            val area = listOfNotNull(country?.name, region?.name).joinToString(", ")
+            viewModel.setAreas(area)
             findNavController().popBackStack()
         }
     }
