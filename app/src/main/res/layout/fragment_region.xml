@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_black"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/arrow_back_24px"
+        app:title="@string/choosing_region"
+        app:titleMargin="@dimen/indent_8dp"
+        app:titleTextAppearance="@style/Medium22" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/industryFilterField"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/indent_56dp"
+            android:layout_marginHorizontal="@dimen/indent_16dp"
+            android:layout_marginVertical="@dimen/indent_8dp"
+            android:autofillHints=""
+            android:background="@drawable/edittext"
+            android:hint="@string/enter_industry"
+            android:textColorHint="@color/gray_white"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingStart="@dimen/indent_16dp"
+            android:paddingEnd="58dp"
+            android:textAppearance="@style/Regular16" />
+
+        <ImageView
+            android:id="@+id/clearRegion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="@dimen/indent_32dp"
+            android:src="@drawable/close_24px"
+            android:visibility="invisible" />
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/indent_8dp"
+        tools:listitem="@layout/item_region" />
+
+    <LinearLayout
+        android:id="@+id/error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/errorImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/magic_carpet" />
+
+        <TextView
+            android:id="@+id/errorText"
+            style="@style/Medium22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/empty_industry_list" />
+
+    </LinearLayout>
+
+</LinearLayout>

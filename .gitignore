@@ -47,3 +47,9 @@ google-services.json
 # OS specific
 .DS_Store
 *.log
+
+
+/app/src/main/java/ru/practicum/android/diploma/util/tokens/
+/.kotlin/sessions/kotlin-compiler-10949496138097434665.salive
+/.idea/
+/.kotlin/sessions/

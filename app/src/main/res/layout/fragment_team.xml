@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.screens.team.TeamFragment"
+    android:background="@color/white_black"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Medium22"
+        android:text="@string/team"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="19dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Bold32"
+        android:text="@string/working_on_the_app"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="43dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Medium16"
+        android:text="@string/alexander_antipin"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Medium16"
+        android:text="@string/sergey_boikov"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Medium16"
+        android:text="@string/sukhanov_temirlan"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>
